@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>粉色星空主页 - kazon0</title>
+<style>
+  /* 全屏背景和星空 */
+  body, html {
+    margin: 0; padding: 0; height: 100%;
+    overflow: hidden;
+    background: #1e0b27;
+    background: linear-gradient(135deg, #ff6fa1 0%, #8b2e66 100%);
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  }
+  canvas {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* 动漫人物 */
+  #anime-character {
+    position: fixed;
+    bottom: 10%;
+    right: 10%;
+    width: 200px;
+    opacity: 0.8;
+    filter: drop-shadow(0 0 6px #ff5bbd);
+    z-index: 10;
+    user-select: none;
+  }
+
+  /* 欢迎文字 */
+  .welcome-text {
+    position: fixed;
+    top: 20%;
+    left: 50%;
+    transform: translateX(-50%);
+    color: #ffcee9;
+    font-size: 2.5rem;
+    font-weight: 600;
+    text-shadow: 0 0 12px #ff9cd8;
+    z-index: 5;
+  }
+</style>
+</head>
+<body>
+
+<div class="welcome-text">欢迎来到 kazon0 的粉色星空世界 ✨</div>
+
+<img id="anime-character" src="https://i.imgur.com/8Q9Xw0Y.png" alt="动漫人物" />
+
+<canvas id="stars"></canvas>
+
+<script>
+// 简易星空效果
+const canvas = document.getElementById('stars');
+const ctx = canvas.getContext('2d');
+let stars = [];
+const maxStars = 150;
+
+function resize() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+window.addEventListener('resize', resize);
+resize();
+
+function random(min, max) {
+  return Math.random() * (max - min) + min;
+}
+
+function createStars() {
+  stars = [];
+  for(let i=0; i<maxStars; i++){
+    stars.push({
+      x: random(0, canvas.width),
+      y: random(0, canvas.height),
+      radius: random(0.5, 1.5),
+      alpha: random(0.2, 1),
+      dx: random(-0.05, 0.05),
+      dy: random(-0.02, 0.02),
+      phase: random(0, 2 * Math.PI)
+    });
+  }
+}
+createStars();
+
+function animate() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  for(let star of stars){
+    star.alpha = 0.5 + 0.5 * Math.sin(Date.now()/500 + star.phase);
+    ctx.beginPath();
+    ctx.arc(star.x, star.y, star.radius, 0, 2*Math.PI);
+    ctx.fillStyle = `rgba(255,182,193,${star.alpha})`; // 粉色星光
+    ctx.shadowColor = `rgba(255,105,180,${star.alpha})`;
+    ctx.shadowBlur = 4;
+    ctx.fill();
+    star.x += star.dx;
+    star.y += star.dy;
+    if(star.x < 0) star.x = canvas.width;
+    if(star.x > canvas.width) star.x = 0;
+    if(star.y < 0) star.y = canvas.height;
+    if(star.y > canvas.height) star.y = 0;
+  }
+  requestAnimationFrame(animate);
+}
+animate();
+</script>
+
+</body>
+</html>
