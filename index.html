@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>欢迎来到kazon的小天地</title>
+  <title>欢迎来到kazon小天地</title>
 
   <!-- 手写中文字体 -->
   <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&display=swap" rel="stylesheet" />
@@ -20,32 +20,25 @@
       top: 0; left: 0;
       width: 100vw; height: 100vh;
       z-index: 1000;
+      opacity: 1;
+      transition: opacity 1s ease;
     }
     .title {
-  position: fixed;
-  top: 50%; left: 50%;
-  transform: translate(-50%, -50%);
-  color: #FFC0CB;  /* 淡粉色 */
-  font-size: 40px;
-  text-align: center;
-  text-shadow:
-    0 0 5px #FFC0CB,
-    0 0 10px #FFC0CB,
-    0 0 20px #FFB6C1,
-    0 0 30px #FFB6C1;
-  z-index: 1001;
-  user-select: none;
-}
-    #main-content {
-      display: none;
-      padding: 40px;
-      color: #222;
-      font-size: 24px;
+      position: fixed;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      color: #FFC0CB;
+      font-size: 40px;
       text-align: center;
-      font-family: Arial, sans-serif;
-    }
-    #main-content.visible {
-      display: block;
+      text-shadow:
+        0 0 5px #FFC0CB,
+        0 0 10px #FFC0CB,
+        0 0 20px #FFB6C1,
+        0 0 30px #FFB6C1;
+      z-index: 1001;
+      user-select: none;
+      opacity: 1;
+      transition: opacity 1s ease;
     }
   </style>
 </head>
@@ -53,7 +46,7 @@
   <div id="vanta-bg"></div>
   <div class="title">愿与你纵横七海，请带我阅遍千秋</div>
 
-  <!-- 引入 three.js 和 VANTA.NET -->
+  <!-- three.js 和 VANTA.NET -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
   <script>
@@ -69,17 +62,24 @@
       backgroundColor: 0x0d0d2b
     });
 
-    // 自动5秒后关闭动画，显示主页内容
-    setTimeout(() => {
-      if (vantaEffect) vantaEffect.destroy();
-      document.getElementById('vanta-bg').style.display = 'none';
-      document.querySelector('.title').style.display = 'none';
-      document.getElementById('main-content').classList.add('visible');
-      document.body.style.overflow = 'auto';
-    }, 5000);
-
-    // 页面加载时禁止滚动
+    // 禁止滚动
     document.body.style.overflow = 'hidden';
+
+    setTimeout(() => {
+      if (vantaEffect && typeof vantaEffect.destroy === "function") {
+        vantaEffect.destroy();
+      }
+      // 淡出星空和文字
+      document.getElementById('vanta-bg').style.opacity = 0;
+      document.querySelector('.title').style.opacity = 0;
+
+      // 1秒后彻底隐藏
+      setTimeout(() => {
+        document.getElementById('vanta-bg').style.display = 'none';
+        document.querySelector('.title').style.display = 'none';
+        // 滚动依然禁止，页面空白且无滚动条
+      }, 1000);
+    }, 5000);
   </script>
 </body>
 </html>
