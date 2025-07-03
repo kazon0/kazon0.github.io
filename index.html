@@ -65,21 +65,11 @@
     // 禁止滚动
     document.body.style.overflow = 'hidden';
 
-    setTimeout(() => {
-      if (vantaEffect && typeof vantaEffect.destroy === "function") {
-        vantaEffect.destroy();
-      }
-      // 淡出星空和文字
-      document.getElementById('vanta-bg').style.opacity = 0;
-      document.querySelector('.title').style.opacity = 0;
-
-      // 1秒后彻底隐藏
-      setTimeout(() => {
-        document.getElementById('vanta-bg').style.display = 'none';
-        document.querySelector('.title').style.display = 'none';
-        // 滚动依然禁止，页面空白且无滚动条
-      }, 1000);
-    }, 5000);
+setTimeout(() => {
+  if (vantaEffect) vantaEffect.destroy();
+  window.location.href = 'https://github.com/kazon0';
+}, 5000);
+    //跳转到github主界面
   </script>
 </body>
 </html>
